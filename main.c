@@ -35,13 +35,34 @@ unsigned long ul = 18446744073709551615;
 //floating price
 float price;
 
+struct Books {
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+
+typedef struct Booker {
+   char title[50];
+   char author[50];
+   char subject[100];
+   int book_id;
+} Book;
+
+union Data {
+   int i;
+   float f;
+   char str[20];
+};
+
 
 //function declarations
 void arithmethicOperators(void);
 void incrementBlockLevelIndex(void);
 extern void write_extern();
 double getAverage(int arr[], int size);
-
+void printBook( struct Books book );
+void printBookPtr( struct Books *book );
 
 void pointerToArray(){
      double balance[5] = {1000.0, 2.0, 3.4, 17.0, 50.0};
@@ -62,6 +83,83 @@ void pointerToArray(){
    for ( i = 0; i < 5; i++ ) {
       printf("*(balance + %d) : %f\n",  i, *(balance + i) );
    }
+}
+
+void unions(){
+    union Data data;        
+
+   data.i = 10;
+   data.f = 220.5;
+   strcpy( data.str, "C Programming");
+
+   
+   data.i = 10;
+   printf( "data.i : %d\n", data.i);
+   
+   data.f = 220.5;
+   printf( "data.f : %f\n", data.f);
+   
+   strcpy( data.str, "C Programming");
+   printf( "data.str : %s\n", data.str);
+
+
+}
+
+void structs(){
+    struct Books Book1;        /* Declare Book1 of type Book */
+   struct Books Book2;        /* Declare Book2 of type Book */
+ 
+   /* book 1 specification */
+   strcpy( Book1.title, "C Programming");
+   strcpy( Book1.author, "Nuha Ali"); 
+   strcpy( Book1.subject, "C Programming Tutorial");
+   Book1.book_id = 6495407;
+
+   /* book 2 specification */
+   strcpy( Book2.title, "Professional C++");
+   strcpy( Book2.author, "Marc Gregoire");
+   strcpy( Book2.subject, "C++ Programming");
+   Book2.book_id = 6495700;
+ 
+   /* print Book1 info */
+   printf( "Book 1 title : %s\n", Book1.title);
+   printf( "Book 1 author : %s\n", Book1.author);
+   printf( "Book 1 subject : %s\n", Book1.subject);
+   printf( "Book 1 book_id : %d\n", Book1.book_id);
+
+   /* print Book2 info */
+   printf( "Book 2 title : %s\n", Book2.title);
+   printf( "Book 2 author : %s\n", Book2.author);
+   printf( "Book 2 subject : %s\n", Book2.subject);
+   printf( "Book 2 book_id : %d\n", Book2.book_id);
+
+    /* print Book1 info */
+   printBook( Book1 );
+
+   /* Print Book2 info */
+   printBook( Book2 );
+
+   /* print Book1 info by passing address of Book1 */
+   printBookPtr( &Book1 );
+
+   /* print Book2 info by passing address of Book2 */
+   printBookPtr( &Book2 );
+}
+
+void printBook( struct Books book ) {
+
+   printf( "Book title : %s\n", book.title);
+   printf( "Book author : %s\n", book.author);
+   printf( "Book subject : %s\n", book.subject);
+   printf( "Book book_id : %d\n", book.book_id);
+}
+
+void printBookPtr( struct Books *book ) {
+
+   printf( "Book title : %s\n", book->title);
+   printf( "Book author : %s\n", book->author);
+   printf( "Book subject : %s\n", book->subject);
+   printf( "Book book_id : %d\n", book->book_id);
 }
 
 void pointerToPointer(){
@@ -515,6 +613,20 @@ void pointersToFunctions(){
    printf("Number of seconds: %ld\n", sec );
 }
 
+void typedefs(){
+    Book book;
+ 
+   strcpy( book.title, "C Programming");
+   strcpy( book.author, "Nuha Ali"); 
+   strcpy( book.subject, "C Programming Tutorial");
+   book.book_id = 6495407;
+ 
+   printf( "Book title : %s\n", book.title);
+   printf( "Book author : %s\n", book.author);
+   printf( "Book subject : %s\n", book.subject);
+   printf( "Book book_id : %d\n", book.book_id);
+}
+
 
 
 void arrayOfPointers(){
@@ -558,8 +670,69 @@ double getAverage(int arr[], int size) {
    return avg;
 }
 
+unsigned long long int factorial(unsigned int i) {
+
+   if(i <= 1) {
+      return 1;
+   }
+   return i * factorial(i - 1);
+}
+
+
+int fibonacci(int i) {
+
+   if(i == 0) {
+      return 0;
+   }
+	
+   if(i == 1) {
+      return 1;
+   }
+   return fibonacci(i-1) + fibonacci(i-2);
+}
+
+void getput(){
+
+
+
+      int c;
+  printf( "Enter a char :");
+   c = getchar( );
+
+   printf( "\nYou entered: \n");
+   putchar( c );
+
+   char str[100];
+
+   printf( "Enter a string :");
+   gets( str );
+
+   printf( "\nYou entered: ");
+   puts( str );
+char str1[100];
+   int x;
+
+    printf( "Enter a string followed by an int :");
+   scanf("%s %d", str1, &x);
+
+   printf( "\nYou entered: %s %d ", str1, x);
+
+
+
+}
+
 int main(int argc, char** argv){
-    
+    printf("Program name %s\n", argv[0]);
+ 
+   if( argc == 2 ) {
+      printf("The argument supplied is %s\n", argv[1]);
+   }
+   else if( argc > 2 ) {
+      printf("Too many arguments supplied.\n");
+   }
+   else {
+      printf("One argument expected.\n");
+   }
     
     printf("Hello %s", &name);
     printf("\n");
@@ -696,7 +869,60 @@ int main(int argc, char** argv){
 
     strings();
 
-    printf("Next: Structures\n");
-    printf("https://www.tutorialspoint.com/cprogramming/c_structures.htm\n");
+    structs();
+
+    unions();
+
+    typedefs();
+
+    getput();
+    
+
+  
+
+    FILE *fp;
+
+   fp = fopen("test.txt", "w+");
+   fprintf(fp, "This is testing for fprintf...\n");
+   fputs("This is testing for fputs...\n", fp);
+   fclose(fp);
+
+   char name1[100];
+   char *desc;
+
+   strcpy(name1, "Adam Howard");
+
+   /* allocate memory dynamically */
+   desc= malloc( 50 * sizeof(char) );
+	
+   if( desc == NULL ) {
+      fprintf(stderr, "Error - unable to allocate required memory\n");
+   } else {
+      strcpy( desc, "Adam has a degree in software development. ");
+   }
+	
+   /* suppose you want to store bigger description */
+   desc = realloc( desc, 100 * sizeof(char) );
+	
+   if( desc == NULL ) {
+      fprintf(stderr, "Error - unable to allocate required memory\n");
+   } else {
+      strcat( desc, "He is a C developer.");
+   }
+   
+   printf("Name = %s\n", name1 );
+   printf("Description: %s\n", desc );
+
+   /* release memory using free() function */
+   free(desc);
+
+   int num = 12;
+
+    printf("Factorial of %d is %d\n", num, factorial(num));
+
+    for (i = 0; i < 10; i++) {
+      printf("%d\t\n", fibonacci(i));
+   }
+
     return 0;
 }
