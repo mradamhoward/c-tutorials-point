@@ -1,6 +1,7 @@
 c-tutorials-point
 
-to compile 
+Compile with:
+
 gcc main.c externalCount.c -o current.exe
 
 https://www.tutorialspoint.com/cprogramming/index.htm
